@@ -1,0 +1,38 @@
+
+
+
+create table if not exists union_sku(
+	id int(32) not null auto_increment,
+	oid varchar(150) not null default "000000" comment "子订单编号",
+    tid varchar(150) not null default "000000" comment "主订单编号",
+    product_name varchar(900) not null default "000000" comment "sku",
+	sku_name varchar(900) not null default "000000" comment "sku",
+    price decimal(9,2) not null default -1.00 comment "sku价格",
+    num int not null default 0 comment "sku购买数量",
+    outer_code varchar(100) not null default "000000" comment "外部系统编号",
+    product_attribut varchar(300) not null default "unknow" comment "商品属性",
+    info varchar(300) not null default "unknow" comment "套餐信息",
+    postscript varchar(300) not null default "unknow" comment "备注",
+    order_status varchar(100) not null default "unknow" comment "订单状态",
+    code varchar(100) not null default "000000" comment "商家编码",
+    pay_code varchar(100) not null default "000000" comment "支付单号",
+    order_total_fee decimal(9,2) not null default -1.00 comment "应付款",
+    order_payment decimal(9,2) not null default -1.00 comment "实付金额",
+    refund_status varchar(100) not null default "unknow" comment "退款状态",
+    refund_money varchar(50) not null default -1.00 comment "退款金额",
+    created datetime not null default "0000-00-00 00:00:00" comment "订单创建时间",
+    pay_time datetime not null default "0000-00-00 00:00:00" comment "付款时间",
+	buyer_nick varchar(300) not null default "unknow" comment "买家昵称",
+	port char(10) not null default "unknow" comment "销售平台",
+	title varchar(900) not null default "unknow" comment "交易标题",
+	store varchar(150) not null default "unknow" comment "店铺名称",
+	active_price decimal(9,2) not null default 0.00 comment "活动价",
+	retail_price decimal(9,2) not null default 0.00 comment "零售价",
+	S_price decimal(9,2) not null default 0.00 comment "S级大促价",
+	distributorship_price decimal(9,2) not null default 0.00 comment "分销供价",
+	prime_cost decimal(9,2) not null default 0.00 comment "成本价",
+	load_date timestamp not null default current_timestamp() comment "下载时间",
+	update_date timestamp not null default current_timestamp() comment "更新时间",
+	primary key (id) using btree,
+	key `idx_oid`  (`oid`) using btree
+) engine=InnoDB AUTO_INCREMENT = 55726 default charset=utf8mb4 COMMENT = 'union_sku';

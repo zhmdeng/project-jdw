@@ -1,0 +1,126 @@
+
+{
+  "history":{
+                "method": "taobao.trades.sold.history.get",
+                "app_key":"12345678",
+                "session":"test",
+                "timestamp":"2016-01-01 12:00:00",
+                "format":"json",
+                "sign_method":"md5",
+                "v":"2.0",
+                "fields":"tid,type,status,payment,orders,rx_audit_status",
+                "start_created": "2021-01-01",
+                "end_created": "2022-12-31",
+                "page_size": 40
+                },
+
+  "latest": {
+                "method": "taobao.trades.sold.get",
+                "app_key": "1234567",
+                "format": "json",
+                "timestamp": "2022-09-08",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sig": "MD5",
+                "page_size": 40,
+                "fields":"tid,type,status,payment,orders,rx_audit_status"
+                },
+
+  "increment": {
+                "method": "taobao.trades.sold.increment.get",
+                "app_key": "1234567",
+                "session": "",
+                "timestamp": "2022-12-13",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sign": "MD5",
+                "format": "json",
+                "simplify": "false",
+                "fields": "tid,type,status,payment,orders,rx_audit_status",
+                "start_modified": "2022-12-13 00:00:00",
+                "end_modified": "2022-12-13 00:00:00",
+                "page_size": 40,
+                "use_has_next": "true"
+              },
+
+  "session": {
+              "client_id": "1234567",
+              "response_type": "code",
+              "redirect_uri": "",
+              "ApSecret": "",
+              "view": "web",
+              "force_auth": "true",
+              "format": "json"
+              },
+
+  "products": {
+                "method": "taobao.products.get",
+                "app_key": "1234567",
+                "format": "json",
+                "timestamp": "2022-09-08",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sig": "MD5",
+                "fields":"tid,type,status,payment,orders,rx_audit_status",
+                "nick": 12345
+                },
+
+  "sku": {
+                "method": "taobao.item.sku.get",
+                "app_key": "1234567",
+                "format": "json",
+                "timestamp": "2022-09-08",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sign": "MD5",
+                "fields": "sku_id,iid,properties,quantity,price,outer_id,created,modified,status",
+                "sku_id": 81893848,
+                "num_iid": 123456
+                },
+
+  "sku_update": {
+                "method": "tmall.item.quantity.update",
+                "app_key": "1234567",
+                "format": "json",
+                "timestamp": "2022-09-08",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sign": "MD5",
+                "item_id": 123456789
+                },
+
+  "refund": {
+                "method": "taobao.refunds.apply.get",
+                "app_key": "1234567",
+                "format": "json",
+                "timestamp": "2022-09-08",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sign": "MD5",
+                "fields": "refund_id,tid,title,buyer_nick,seller_nick,total_fee,status,created,refund_fdd"
+                },
+
+  "inventory": {
+                "method": "taobao.wlb.wms.inventory.query",
+                "app_key": "1234567",
+                "format": "json",
+                "timestamp": "2022-09-08",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sign": "MD5",
+                "page_size": 30
+                },
+
+  "comments": {
+                "method": "tmall.traderate.feeds.get",
+                "app_key": "1234567",
+                "session": "",
+                "format": "json",
+                "timestamp": "2022-09-12",
+                "v": "2.0",
+                "sign_method": "md5",
+                "sign": "MD5",
+                "child_trade_id": 11111
+                }
+
+}
