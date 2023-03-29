@@ -107,7 +107,7 @@ if __name__ == '__main__':
         #               """
         # base.excute_sql(delete_data, db_info)
         # logs.info("",f"data delete successful,sql statment:\n{delete_data}\ntime range:{begin_time} - {end_time}\n",log_file)
-
+        #
         # # save to database
         # db_info = config.get_parameters('wms')
         # con = base.get_connection(db_info)

@@ -69,6 +69,7 @@ if __name__ == '__main__':
         final_data['total_fee'] = final_data['total_fee'].fillna(value=0.00)
         final_data['order_total_fee'] = final_data['order_total_fee'].fillna(value=0.00)
         final_data['order_discount_fee'] = final_data['order_discount_fee'].fillna(value=0.00)
+        final_data['outer_iid'] = final_data['outer_iid'].fillna(value='000000')
         final_data.to_csv(path_ + "/" + "final_name" + ".csv", index=False)
 
         # final_data['total_fee'] = [lambda x:x.replace(",","") for x in final_data['total_fee']]

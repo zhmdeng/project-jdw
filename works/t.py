@@ -25,6 +25,4 @@ final_data = pd.merge(final_data,data,left_on='子订单编号',right_on='外部
 
 print(len(final_data))
 
-
-
 logs.info("", "order ...........", log_file)
