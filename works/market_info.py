@@ -1,15 +1,13 @@
 
-import datetime as dt
-import sys
-import os
 
-import pandas as pd
 
-from utils.combine_files import Combine
+from utils.combine import Combine
 from bases.logs import Logs
 from bases.base import Base
 from bases.date import Date
 from bases.config import Config
+from utils.trans_files import Transfer
+from utils.generate import Generate
 
 
 if __name__ == '__main__':
@@ -18,6 +16,7 @@ if __name__ == '__main__':
     base = Base()
     date = Date()
     config = Config()
+    generate = Generate()
     try:
             # read path
             path = r"E:\marketing"
@@ -63,10 +62,20 @@ if __name__ == '__main__':
             # db_info = config.get_parameters('wms')
             # con = base.get_connection(db_info)
             #
-            # base.save_sql(final_data,"market_info",con,"wms",log_file)
+            # base.save_sql(final_data,"market_info",con  ,"wms",log_file)
+            # logs.critical("", "data load to database successfully ...........\n", log_file)
+            #
+            # move_path = r"E:\市场"
+            # path = r"E:\marketing\\"
+            # transfer = Transfer()
+            # transfer.move_file(path,move_path, log_file)
+            #
+            # generate.generate_folder(path,log_file)
+            #
+            #
             # logs.info("", "Job run successful ...........\n", log_file)
 
     except Exception as e:
         print(e)
-        logs.info("", f"Exception is:\n\t{e}\n", log_file)
+        logs.error("", f"Exception is:\n\t{e}\n", log_file)
         logs.warning("", "Warning ........... some bugs need you to solve!\n", log_file)

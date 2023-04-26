@@ -28,9 +28,9 @@ class Config:
 
 
 
-if __name__ == '__main__':
-    config = Config()
-    conn = config.get_config()
-    data = config.get_parameters('code')
-    print(data)
-    print(data.get('893811000945-3H'.lower()))
+# if __name__ == '__main__':
+#     config = Config()
+#     conn = config.get_config()
+#     data = config.get_parameters('code')
+#     print(data)
+#     print(data.get('893811000945-3H'.lower()))

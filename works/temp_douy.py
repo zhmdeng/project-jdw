@@ -4,11 +4,13 @@ import os
 
 import pandas as pd
 
-from utils.combine_files import Combine
+from utils.combine import Combine
 from bases.logs import Logs
 from bases.base import Base
 from bases.date import Date
 from bases.config import Config
+from utils.trans_files import Transfer
+from utils.generate import Generate
 
 if __name__ == '__main__':
     log_file = "temp_douy"
@@ -16,6 +18,8 @@ if __name__ == '__main__':
     base = Base()
     date = Date()
     config = Config()
+    transfer = Transfer()
+    generate = Generate()
     try:
         # read path
         path = r"E:\douy"
@@ -35,12 +39,12 @@ if __name__ == '__main__':
 
         db_info = config.get_parameters('wms')
         order = f"""
-                select * from wms.orders where port = '抖音' -- and title = ""
+                select * from wms.orders where port = '抖音' 
                 """
         order = base.read_data(order, db_info)
 
         end_time = max(order['created'])
-        begin_time = end_time+dt.timedelta(days = -90)
+        begin_time = end_time+dt.timedelta(days = -82)
         logs.info("", f"begin time: {begin_time}", log_file)
         logs.info("", f"end time: {end_time}", log_file)
 
@@ -142,13 +146,26 @@ if __name__ == '__main__':
         #               delete from wms.orders where port = '抖音' and created >= '{begin_time}'
         #               """
         # base.excute_sql(delete_data,db_info)
-        # logs.info("", f"data delete successful,sql statment:\n{delete_data}\ntime range:{begin_time} - {end_time}\n", log_file)
-
-
+        # logs.info("", f"data delete successful,sql statement:\n{delete_data}\ntime range:{begin_time} - {end_time}\n", log_file)
+        #
+        #
         # # save to database
         # con = base.get_connection(db_info)
         # base.save_sql(final_data, "orders", con, "wms", log_file)
         # logs.info("", "Job run successful ...........\n", log_file)
+
+        move_path = r"E:\orders\history orders\douy"
+        path = r"E:\douy\\"
+        transfer.move_file(path, move_path, log_file)
+
+        generate.generate_folder(path, log_file)
+        path_drb = r"E:\douy\Doctor's Best"
+        path_zip = r"E:\douy\Zipfizz"
+        generate.generate_folder(path_drb, log_file)
+        generate.generate_folder(path_zip, log_file)
+
+        logs.info("", "Job run successful ...........\n", log_file)
+
 
     except Exception as e:
         print(e)
@@ -162,6 +179,6 @@ if __name__ == '__main__':
         }
         # print(exc_dict)
 
-        logs.info("", f"Exception is:\n\t{exc_dict}\n", log_file)
+        logs.error("", f"Exception is:\n\t{exc_dict}\n", log_file)
         logs.warning("", "Warning ........... some bugs need you to solve!\n", log_file)
         raise e

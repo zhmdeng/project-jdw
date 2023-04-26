@@ -1,11 +1,23 @@
+
+"""
+Basic logical function
+"""
+
+
 import pandas as pd
 from sqlalchemy import create_engine
 from bases.logs import Logs
 
 class Base:
 
+    def get_engine(self,db_info):
+        engine = create_engine(
+            "mysql+pymysql://{}:{}@{}:{}/{}".format(db_info['username'], db_info['password'], db_info['server'],
+                                                    db_info['port'], db_info['database']))
+        return engine
+
     def get_connection(self,db_info):
-        # db_info paramter detail info:
+        # db_info paramters detail info:
         # db_info = {
         #     'username':'root',
         #     'password':'123456',
@@ -13,9 +25,11 @@ class Base:
         #     'server':'localhost',
         #     'database':'wms'
         # }
-        engine = create_engine(
-            "mysql+pymysql://{}:{}@{}:{}/{}".format(db_info['username'], db_info['password'], db_info['server'],
-                                                          db_info['port'], db_info['database']))
+
+        # engine = create_engine(
+        #     "mysql+pymysql://{}:{}@{}:{}/{}".format(db_info['username'], db_info['password'], db_info['server'],
+        #                                                   db_info['port'], db_info['database']))
+        engine = self.get_engine(db_info)
         connection = engine.connect()
         return connection
 
@@ -25,12 +39,12 @@ class Base:
         return data
 
     def excute_sql(self,query,db_info):
-        engine = create_engine(
-            "mysql+pymysql://{}:{}@{}:{}/{}".format(db_info['username'], db_info['password'], db_info['server'],
-                                                    db_info['port'], db_info['database']))
+        # engine = create_engine(
+        #     "mysql+pymysql://{}:{}@{}:{}/{}".format(db_info['username'], db_info['password'], db_info['server'],
+        #                                             db_info['port'], db_info['database']))
+        engine = self.get_engine(db_info)
         with engine.begin() as conn:
             conn.execute(query)
-
 
     def save_sql(self,data,table,con,schema,log_file,chunksize=1000,if_exists="append"):
         log = Logs()
@@ -62,3 +76,13 @@ class Base:
 #         'database':'wms'
 #     }
 #     base.get_connection(db_info)
+
+       # if data is not None:
+       #          if encoding is not None:
+       #              data = data.decode(encoding)
+       #          # else:
+       #          #     data = data.decode("utf-8")
+       #          if DEBUG: print("DEBUG: DATA = ", data)
+       #          if converter is not None:
+       #              data = converter(data)
+       #      row.append(data)

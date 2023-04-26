@@ -1,4 +1,8 @@
 
+
+"""
+自定义报表->以订单维度导出->下载自定义报表：订单维度
+"""
 import datetime as dt
 import datetime
 import sys
@@ -6,11 +10,13 @@ import os
 
 import pandas as pd
 
-from utils.combine_files import Combine
+from utils.combine import Combine
 from bases.logs import Logs
 from bases.base import Base
 from bases.date import Date
 from bases.config import Config
+from utils.trans_files import Transfer
+from utils.generate import Generate
 
 if __name__ == '__main__':
     log_file = "temp_youz"
@@ -18,6 +24,8 @@ if __name__ == '__main__':
     base = Base()
     date = Date()
     config = Config()
+    transfer = Transfer()
+    generate = Generate()
     try:
         # read path
         path = r"E:\youz"
@@ -34,7 +42,7 @@ if __name__ == '__main__':
         order = base.read_data(order, db_info)
 
         end_time = max(order['created'])
-        begin_time = end_time + dt.timedelta(days=-90)
+        begin_time = end_time + dt.timedelta(days=-80)
         logs.info("", f"begin time: {begin_time}", log_file)
         logs.info("", f"end time: {end_time}", log_file)
 
@@ -115,6 +123,15 @@ if __name__ == '__main__':
         # base.save_sql(final_data, "orders", con, "wms", log_file)
         # logs.info("", "load data to orders run successful ...........\n", log_file)
 
+        move_to_path = r"E:\orders\history orders\私域"
+        file_path = r"E:\youz\\"
+        transfer.move_file(file_path,move_to_path,log_file)
+
+        generate.generate_folder(file_path,log_file)
+        folder = r"E:\youz\私域"
+        generate.generate_folder(folder,log_file)
+
+        logs.info("", "Job run successful ...........\n", log_file)
 
 
 
@@ -244,6 +261,6 @@ if __name__ == '__main__':
         }
         # print(exc_dict)
 
-        logs.info("", f"Exception is:\n\t{exc_dict}\n", log_file)
+        logs.error("", f"Exception is:\n\t{exc_dict}\n", log_file)
         logs.warning("", "Warning ........... some bugs need you to solve!\n", log_file)
         raise e

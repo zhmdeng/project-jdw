@@ -3,7 +3,7 @@ import datetime
 import sys
 import os
 
-from utils.combine_files import Combine
+from utils.combine import Combine
 from bases.logs import Logs
 from bases.base import Base
 from bases.date import Date

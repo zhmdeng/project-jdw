@@ -1,0 +1,5 @@
+yourbigfile filter=lfs diff=lfs merge=lfs -text
+F:/PROJECT/report/orders.pbix filter=lfs diff=lfs merge=lfs -text
+F:/PROJECT/report/4cc932af79bfb51687dc7f15cbec70d24f5616a99900b062642c1a2bbd184390 filter=lfs diff=lfs merge=lfs -text
+F:/PROJECT/report/report.rar filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text

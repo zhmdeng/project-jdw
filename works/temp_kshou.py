@@ -5,11 +5,13 @@ import os
 
 import pandas as pd
 
-from utils.combine_files import Combine
+from utils.combine import Combine
 from bases.logs import Logs
 from bases.base import Base
 from bases.date import Date
 from bases.config import Config
+from utils.trans_files import Transfer
+from utils.generate import Generate
 
 
 if __name__ == '__main__':
@@ -18,6 +20,8 @@ if __name__ == '__main__':
     base = Base()
     date = Date()
     config = Config()
+    transfer = Transfer()
+    generate = Generate()
     try:
             # read path
             path = r"E:\kshou"
@@ -34,7 +38,7 @@ if __name__ == '__main__':
             order = base.read_data(order, db_info)
 
             end_time = max(order['created'])
-            begin_time = end_time + dt.timedelta(days=-90)
+            begin_time = end_time + dt.timedelta(days=-82)
             logs.info("", f"begin time: {begin_time}", log_file)
             logs.info("", f"end time: {end_time}", log_file)
 
@@ -100,11 +104,11 @@ if __name__ == '__main__':
              'load_date', 'store', 'port'])
             print(len(final_data))
 
-            # save to csv
-            time = str(max(final_data['created'])).split(" ")[0]
-            final_data.to_csv(path_ + "/" + final_name + f"{time}" + ".csv",index=False)
-            logs.info("", "data load to excel successful ...........", log_file)
-
+            # # save to csv
+            # time = str(max(final_data['created'])).split(" ")[0]
+            # final_data.to_csv(path_ + "/" + final_name + f"{time}" + ".csv",index=False)
+            # logs.info("", "data load to excel successful ...........", log_file)
+            #
             # # delete lasted 3 months data
             # delete_data = f"""
             #               delete from wms.orders where port = '快手' and created >= '{begin_time}'
@@ -119,7 +123,19 @@ if __name__ == '__main__':
             # base.save_sql(final_data,"orders",con,"wms",log_file)
             # logs.info("", "Job run successful ...........\n", log_file)
 
+            move_path = r"E:\orders\history orders\kshou\doctor's best"
+            path = r"E:\kshou\\"
+            transfer.move_file(path, move_path, log_file)
+
+            generate.generate_folder(path, log_file)
+            folder = r"E:\kshou\Doctor's Best"
+
+            generate.generate_folder(folder, log_file)
+
+
+            logs.info("", "Job run successful ...........\n", log_file)
+
     except Exception as e:
         print(e)
-        logs.info("", f"Exception is:\n\t{e}\n", log_file)
+        logs.error("", f"Exception is:\n\t{e}\n", log_file)
         logs.warning("", "Warning ........... some bugs need you to solve!\n", log_file)
