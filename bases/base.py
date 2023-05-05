@@ -49,7 +49,7 @@ class Base:
     def save_sql(self,data,table,con,schema,log_file,chunksize=1000,if_exists="append"):
         log = Logs()
         data.to_sql(name=table,con=con,schema=schema,chunksize=chunksize,if_exists=if_exists,index=False)
-        log.info("","data load to database successful!",log_file)
+        log.critical("","data load to database successfully!",log_file)
 
     def retype(self,data,col_name,new_type,log_file):
         logs = Logs()

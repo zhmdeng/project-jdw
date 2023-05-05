@@ -90,7 +90,7 @@ if __name__ == '__main__':
         base.fillna_col(tmall, tmall.columns, values, log_file)
 
         tmall['port'] = '天猫'
-        logs.info("", f"******************* tmall data load successfully! data size:{tmall.info} *******************",
+        logs.info("", f"******************* tmall data load successfully! data size:{len(tmall)} *******************",
                   log_file)
 
         # 抖音
@@ -113,21 +113,27 @@ if __name__ == '__main__':
         #         douy['refund_money'][i] = douy['order_total_money'][i]
         #     else:
         #         continue
-        print(len(douy))
-        print(douy['order_total_fee'][6287])
-        douy_ = douy.iloc[:36908, :]
-        _douy_ = douy.iloc[36908:, :]
 
+        douy_ = douy.iloc[:45509, :]
+        _douy_ = douy.iloc[45509:, :]
 
         def replace_(data):
 
             for i in range(len(data)):
+                print(data['refund_status'][i])
                 data['product_id'][i] = str(data['product_id'][i]).strip()
                 data['order_total_fee'][i] = str(data['order_total_fee'][i]).replace(",", "")
                 data['outer_code'][i] = str(data['outer_code'][i]).strip()
                 data['code'][i] = str(data['code'][i]).strip()
+
                 if (data['order_status'][i] is "已完成") and (data['order_status'][i] is not None):
                     data['order_status'][i] = "交易成功"
+                else:
+                    continue
+
+
+                if data['refund_status'][i] is '-':
+                    data['refund_status'][i] = '无退款'
                 else:
                     continue
             return data
@@ -142,12 +148,14 @@ if __name__ == '__main__':
         douy = pd.DataFrame(douy)
         print(douy.columns)
         del douy['index']
+
+
         values = ['000000', '000000', '000000', 'unknow', 0, '000000', -1.00, '0000-00-00 00:00:00', 'unknow', -1.00,
                   'unknow', 'unknow', '0000-00-00 00:00:00', 'unknow', '000000', 'unknow']
         base.fillna_col(douy, douy.columns, values, log_file)
         douy['port'] = '抖音'
         final_data = douy
-        logs.info("", f"******************* douy data load successfully! data size:{douy.info} *******************",
+        logs.info("", f"******************* douy data load successfully! data size:{len(douy)} *******************",
                   log_file)
 
         ## 快手
@@ -188,10 +196,10 @@ if __name__ == '__main__':
                 kshou['outer_code'][i] = 'DRB-00257'
                 kshou['code'][i] = 'DRB-00257'
             elif kshou['商品ID'][i] == 15381771086775:
-                kshou['outer_code'][i] = 'P31052118234398178'
+                kshou['outer_code'][i] = 'DRB-00595C'
                 kshou['code'][i] = 'P31052118234398178'
             elif kshou['商品ID'][i] == 4255052396775:
-                kshou['outer_code'][i] = 'P31052118213487678'
+                kshou['outer_code'][i] = 'DRB-00580C'
                 kshou['code'][i] = 'P31052118213487678'
             elif kshou['商品ID'][i] == 4035845427775:
                 kshou['outer_code'][i] = 'DRB-00183'
@@ -216,7 +224,7 @@ if __name__ == '__main__':
         kshou['port'] = '快手'
         for col in ['order_total_fee', 'price']:
             kshou[f"{col}"] = kshou[f"{col}"].str.extract(r'(\d+)', expand=True).astype('str')
-        logs.info("", f"******************* kshou data load successfully! data size:{kshou.info} *******************",
+        logs.info("", f"******************* kshou data load successfully! data size:{len(kshou)} *******************",
                   log_file)
 
         ## private
@@ -238,10 +246,16 @@ if __name__ == '__main__':
         code = config.get_parameters('code')
         private['title'] = ''
 
+        logs.info("", f"{code}", log_file)
         for i in range(len(private)):
+
 
             private['outer_code'][i] = str(private['outer_code'][i]).strip()
             private['code'][i] = str(private['code'][i]).strip()
+
+            # logs.info("", f"{private['outer_code'][i].lower()}", log_file)
+            # logs.info("", f"{len(private['outer_code'][i])}", log_file)
+            # logs.info("", f"{code.get(private['outer_code'][i].lower())}", log_file)
 
             if "Doctor’s Best" in str(private['sku_name'][i]) or ("Doctor's" in str(private['sku_name'][i])) or (
                     "DRB" in str(private['sku_name'][i])) or ("DRB" in str(private['outer_code'][i])) or (
@@ -259,20 +273,27 @@ if __name__ == '__main__':
             else:
                 continue
 
-            if code.get(private['code'][i]) == None:
-                if code.get(private['outer_code'][i]) == None:
+            if code.get(private['code'][i].lower()) == None:
+
+                if code.get(private['outer_code'][i].lower()) == None:
+                    logs.info("", f"{private['outer_code'][i]}", log_file)
                     continue
                 else:
                     private['outer_code'][i] = code.get(private['outer_code'][i].lower()).replace("'", "")
             else:
                 private['outer_code'][i] = code.get(private['code'][i].lower()).replace("'", "")
 
+            if private['refund_money'][i] == 0:
+                private['refund_status'][i] = '无退款'
+            else:
+                continue
+
         values = ['000000', '000000', 'unknow', '0000-00-00 00:00:00', 'unknow', 'unknow', '000000', '000000',
                   -1.00, 0, -1.00, 'unknow', 'unknow', -1.00, 'unknow', 'unknow', 'unknow', 'unknow']
         print(private.columns)
         base.fillna_col(private, private.columns, values, log_file)
         logs.info("",
-                  f"******************* private data load successfully! data size:{private.info} *******************",
+                  f"******************* private data load successfully! data size:{len(private)} *******************",
                   log_file)
 
         # # combine
@@ -299,7 +320,7 @@ if __name__ == '__main__':
         print(len(final_data))
         # # save to csv
         time = str(max(final_data['created'])).split(" ")[0]
-        final_data.to_csv(path_ + "test" + ".csv", index=False)
+        final_data.to_csv(path_ + "test.csv", index=False)
         # final_data.to_csv(path_ +  final_name + f"{time}" + ".csv", index=False)
         logs.info("", "data load to excel successful ...........", log_file)
         print(final_data.columns)
@@ -322,6 +343,10 @@ if __name__ == '__main__':
 
         print(min(final_data['created']))
 
+        # save to csv
+        final_data.to_csv(path_ + final_name + f"{time}" + ".csv", index=False)
+        logs.info("", "data load to excel successfully", log_file)
+
         # # delete lasted 3 months data from wms.order_skus table
         # del_data = f"""
         #             select count(*) from wms.order_skus where created >= '{begin_time}'
@@ -342,43 +367,43 @@ if __name__ == '__main__':
         #
         # base.save_sql(final_data, "order_skus", con, "wms", log_file)
         # logs.warning("", "data load to database successfully",log_file)
-
-
-
-
-        # move file folder and generate new folders
-        path_tmall = r"E:\sku\tmall"
-        path_douy = r"E:\sku\douy"
-        path_kshou = r"E:\sku\kshou"
-        path_youz = r"E:\sku\youz"
-
-        path1 = r"E:\tmall sku"
-        path2 = r"E:\douy sku"
-        path3 = r"E:\kshou sku"
-        path4 = r"E:\youz sku"
-        transfer.move_file(path1, path_tmall, log_file)
-        transfer.move_file(path2, path_douy, log_file)
-        transfer.move_file(path3, path_kshou, log_file)
-        transfer.move_file(path4, path_youz, log_file)
-
-        generate.generate_folder(path1, log_file)
-        generate.generate_folder(path2, log_file)
-        generate.generate_folder(path3, log_file)
-        generate.generate_folder(path4, log_file)
-        path_drb = r"E:\tmall sku\Doctor's Best"
-        path_zip = r"E:\tmall sku\Zipfizz"
-        path_mai = r"E:\tmall sku\MAIKON"
-        generate.generate_folder(path_drb, log_file)
-        generate.generate_folder(path_zip, log_file)
-        generate.generate_folder(path_mai, log_file)
-        path_drb = r"E:\douy sku\Doctor's Best"
-        path_zip = r"E:\douy sku\Zipfizz"
-        generate.generate_folder(path_drb, log_file)
-        generate.generate_folder(path_zip, log_file)
-        path_drb = r"E:\kshou sku\Doctor's Best"
-        generate.generate_folder(path_drb, log_file)
-        path_drb = r"E:\youz sku\私域"
-        generate.generate_folder(path_drb, log_file)
+        #
+        #
+        #
+        #
+        # # move file folder and generate new folders
+        # path_tmall = r"E:\sku\tmall"
+        # path_douy = r"E:\sku\douy"
+        # path_kshou = r"E:\sku\kshou"
+        # path_youz = r"E:\sku\youz"
+        #
+        # path1 = r"E:\tmall sku"
+        # path2 = r"E:\douy sku"
+        # path3 = r"E:\kshou sku"
+        # path4 = r"E:\youz sku"
+        # transfer.move_file(path1, path_tmall, log_file)
+        # transfer.move_file(path2, path_douy, log_file)
+        # transfer.move_file(path3, path_kshou, log_file)
+        # transfer.move_file(path4, path_youz, log_file)
+        #
+        # generate.generate_folder(path1, log_file)
+        # generate.generate_folder(path2, log_file)
+        # generate.generate_folder(path3, log_file)
+        # generate.generate_folder(path4, log_file)
+        # path_drb = r"E:\tmall sku\Doctor's Best"
+        # path_zip = r"E:\tmall sku\Zipfizz"
+        # path_mai = r"E:\tmall sku\MAIKON"
+        # generate.generate_folder(path_drb, log_file)
+        # generate.generate_folder(path_zip, log_file)
+        # generate.generate_folder(path_mai, log_file)
+        # path_drb = r"E:\douy sku\Doctor's Best"
+        # path_zip = r"E:\douy sku\Zipfizz"
+        # generate.generate_folder(path_drb, log_file)
+        # generate.generate_folder(path_zip, log_file)
+        # path_drb = r"E:\kshou sku\Doctor's Best"
+        # generate.generate_folder(path_drb, log_file)
+        # path_drb = r"E:\youz sku\私域"
+        # generate.generate_folder(path_drb, log_file)
 
         logs.info("", "Job run successfully\n", log_file)
 
