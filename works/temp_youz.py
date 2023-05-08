@@ -122,132 +122,16 @@ if __name__ == '__main__':
         #
         # base.save_sql(final_data, "orders", con, "wms", log_file)
         # logs.info("", "load data to orders run successful ...........\n", log_file)
-
-        move_to_path = r"E:\orders\history orders\私域"
-        file_path = r"E:\youz\\"
-        transfer.move_file(file_path,move_to_path,log_file)
-
-        generate.generate_folder(file_path,log_file)
-        folder = r"E:\youz\私域"
-        generate.generate_folder(folder,log_file)
-
-        logs.info("", "Job run successful ...........\n", log_file)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         #
-        # # load to wms.orders table
-        # new_data = pd.read_excel(r"E:\有赞.xlsx")
-        # final_data = final_data.loc[~(final_data['group'].isin(['非淘ToC']))]
-        # final_data = final_data.loc[(final_data['output_type'].isin(['消费者退货入库','销售出库单']))]
+        # move_to_path = r"E:\orders\history orders\私域"
+        # file_path = r"E:\youz\\"
+        # transfer.move_file(file_path,move_to_path,log_file)
         #
-        # new_data = pd.merge(final_data,new_data,left_on=['code','outer_code','LBX_code'],right_on=['商品ID','货品编码','仓储单号'],how='inner')
-        # print(len(new_data))
+        # generate.generate_folder(file_path,log_file)
+        # folder = r"E:\youz\私域"
+        # generate.generate_folder(folder,log_file)
         #
-        # new_data = new_data[['store_name','outer_code','group','product_name','num','time',
-        #                      '仓出库时间','订单金额','运费','买家收货地址','货品金额',
-        #                      '订单状态','快递公司','物流单号','店铺名称','分销店铺名称','外部单号']]
-        # new_data.columns = ['store_code','outer_iid','port','order_title','num','created',
-        #                     'consign_time','order_total_fee','post_fee','receiver_address','price',
-        #                     'order_status','shipping_company_name','sid','store','distributor','tid']
-        # print(new_data)
-        # new_data.reset_index(inplace=True)
-        # new_data.to_excel(r"E:\new_data.xlsx")
-        #
-        # new_data['receiver_address'] = new_data['receiver_address'].fillna(value='unknow')
-        # new_data['receiver_state'] = ''
-        # new_data['receiver_city'] = ''
-        # new_data['receiver_district'] = ''
-        # new_data['receiver_town'] = ''
-        #
-        # new_data['title'] = ''
-        # for i in range(len(new_data)):
-        #
-        #     new_data['receiver_address'][i] = str(new_data['receiver_address'][i])
-        #
-        #     if new_data['outer_iid'][i].startswith('DRB'):
-        #         new_data['title'][i] = "Doctor's Best"
-        #     elif new_data['outer_iid'][i].startswith('zip'):
-        #         new_data['title'][i] = "Zipfizz"
-        #     elif new_data['outer_iid'][i].startswith('WK'):
-        #         new_data['title'][i] = "MAIKON"
-        #     else:
-        #         new_data['title'][i] = "unknow"
-        #
-        #     if new_data['port'][i] == '有赞（贴溯源码）':
-        #         new_data['port'][i] = '私域'
-        #     # elif new_data['port'][i] == '洋葱':
-        #     #     new_data['port'][i] = '经/分销'
-        #     else:
-        #         continue
-        #
-        #     if new_data['receiver_address'][i] == 'unknow':
-        #         continue
-        #     elif len(new_data['receiver_address'][i]) == 1:
-        #         print(new_data['receiver_address'][i])
-        #         new_data['receiver_state'][i] = str(new_data['receiver_address'][i]).split(' ')[0]
-        #     elif len(new_data['receiver_address'][i]) == 2:
-        #         new_data['receiver_state'][i] = str(new_data['receiver_address'][i]).split(' ')[0]
-        #         new_data['receiver_city'][i] = str(new_data['receiver_address'][i]).split(' ')[1]
-        #     elif len(new_data['receiver_address'][i]) == 3:
-        #         new_data['receiver_state'][i] = str(new_data['receiver_address'][i]).split(' ')[0]
-        #         new_data['receiver_city'][i] = str(new_data['receiver_address'][i]).split(' ')[1]
-        #         new_data['receiver_district'][i] = str(new_data['receiver_address'][i]).split(' ')[2]
-        #     else:
-        #         new_data['receiver_state'][i] = str(new_data['receiver_address'][i]).split(' ')[0]
-        #         new_data['receiver_city'][i] = str(new_data['receiver_address'][i]).split(' ')[1]
-        #         new_data['receiver_district'][i] = str(new_data['receiver_address'][i]).split(' ')[2]
-        #         new_data['receiver_town'][i] = str(new_data['receiver_address'][i]).split(' ')[3]
-        #
-        # print(new_data.columns)
-        # new_data = new_data.reset_index(drop=True)
-        # del new_data['index']
-        # new_data.columns = ['store_code', 'outer_iid', 'port', 'order_title', 'num','created', 'consign_time',
-        #                     'order_total_fee', 'post_fee','receiver_address', 'price', 'order_status','shipping_company_name',
-        #                      'sid', 'store', 'distributor', 'tid','receiver_state', 'receiver_city','receiver_district',
-        #                     'receiver_town', 'title']
-        #
-        # values = ['unknow', '000000', 'unknow', 'unknow', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00',
-        #           -1.00, -1.00,'unknow', -1.00, 'unknow', 'unknow',
-        #           '000000','unknow','unknow','0','unknow','unknow','unknow',
-        #           'unknow','unknow']
-        # base.fillna_col(new_data, new_data.columns, values, log_file)
-        #
-        # # new_data.to_excel(r"E:\new_data1.xlsx")
-        # # base.save_sql(new_data, "orders", con, "wms", log_file)
-        # # logs.info("", "load data to wms.orders run successful ...........\n", log_file)
+        # logs.info("", "Job run successful ...........\n", log_file)
 
     except Exception as e:
         print(e)
