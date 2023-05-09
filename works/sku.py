@@ -36,7 +36,6 @@ if __name__ == '__main__':
                 """
         order = base.read_data(order, db_info)
 
-        print("*********************************")
         # print(type(order['created'][0]))
         # order['created'] = pd.to_datetime(order['created'],format="%Y-%m-%d %H:%M%S",errors='ignore')
         end_time = max(order['created'])
@@ -79,10 +78,8 @@ if __name__ == '__main__':
         tmall = tmall[['子订单编号', '主订单编号', '标题', '价格', '购买数量', '外部系统编号', '商品属性', '套餐信息', '备注',
                        '订单状态', '商家编码', '支付单号', '买家应付货款', '买家实际支付金额', '退款状态', '退款金额', '订单创建时间', '订单付款时间', 'title']]
 
-        tmall.columns = ['oid', 'order_id', 'sku_name', 'price', 'num', 'outer_code', 'product_attribut', 'info',
-                         'postscript',
-                         'order_status', 'code', 'pay_code', 'order_total_fee', 'order_payment', 'refund_status',
-                         'refund_money', 'created', 'pay_time', 'title']
+        tmall.columns = ['oid', 'order_id', 'sku_name', 'price', 'num', 'outer_code', 'product_attribut', 'info','postscript',
+                         'order_status', 'code', 'pay_code', 'order_total_fee', 'order_payment', 'refund_status','refund_money', 'created', 'pay_time', 'title']
 
         values = ['000000', '000000', '000000', -1.00, 0, '000000', 'unknow', 'unknow', 'unknow',
                   'unknow', '000000', '000000', -1.00, -1.00, 'unknow', -1.00, '0000-00-00 00:00:00',
@@ -105,14 +102,6 @@ if __name__ == '__main__':
         douy.columns = ['oid', 'order_id', 'sku_name', 'product_attribut', 'num', 'outer_code',
                         'order_total_fee', 'created', 'order_status', 'price', 'title', 'postscript',
                         'pay_time', 'refund_status', 'code', 'product_id']
-        # for i in range(len(douy)):
-
-        # douy['refund_money'] = ''
-        # for i in range(len(douy)):
-        #     if douy['refund_status'][i] is '已全额退款' or douy['refund_status'][i] is '退款成功':
-        #         douy['refund_money'][i] = douy['order_total_money'][i]
-        #     else:
-        #         continue
 
         douy_ = douy.iloc[:45509, :]
         _douy_ = douy.iloc[45509:, :]
@@ -131,13 +120,11 @@ if __name__ == '__main__':
                 else:
                     continue
 
-
                 if data['refund_status'][i] is '-':
                     data['refund_status'][i] = '无退款'
                 else:
                     continue
             return data
-
 
         douy_.reset_index(inplace=True)
         _douy_.reset_index(inplace=True)
@@ -148,7 +135,6 @@ if __name__ == '__main__':
         douy = pd.DataFrame(douy)
         print(douy.columns)
         del douy['index']
-
 
         values = ['000000', '000000', '000000', 'unknow', 0, '000000', -1.00, '0000-00-00 00:00:00', 'unknow', -1.00,
                   'unknow', 'unknow', '0000-00-00 00:00:00', 'unknow', '000000', 'unknow']
@@ -290,7 +276,7 @@ if __name__ == '__main__':
 
         values = ['000000', '000000', 'unknow', '0000-00-00 00:00:00', 'unknow', 'unknow', '000000', '000000',
                   -1.00, 0, -1.00, 'unknow', 'unknow', -1.00, 'unknow', 'unknow', 'unknow', 'unknow']
-        print(private.columns)
+
         base.fillna_col(private, private.columns, values, log_file)
         logs.info("",
                   f"******************* private data load successfully! data size:{len(private)} *******************",

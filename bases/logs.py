@@ -100,9 +100,5 @@ class Logs:
 #     # logger.warning('warning')
 #     # logger.error('error')
 #     # logger.critical('qqqqqqqqqq')
-#
-#
-#
-#
 #     logs = Logs()
 #     logs.info("","successful","test")
