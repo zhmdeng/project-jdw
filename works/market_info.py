@@ -60,14 +60,14 @@ if __name__ == '__main__':
         # db_info = config.get_parameters('wms')
         # con = base.get_connection(db_info)
         #
-        # base.save_sql(final_data ,"market_info" ,con ,"wms" ,log_file)
+        # base.save_sql(final_data, "market_info", con, "wms", log_file)
         #
         # move_path = r"E:\市场"
         # path = r"E:\marketing"
         # transfer = Transfer()
-        # transfer.move_file(path ,move_path, log_file)
+        # transfer.move_file(path, move_path, log_file)
         #
-        # generate.generate_folder(path ,log_file)
+        # generate.generate_folder(path, log_file)
         #
         # logs.info("", "Job run successfully\n", log_file)
 
