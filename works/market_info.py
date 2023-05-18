@@ -51,23 +51,23 @@ if __name__ == '__main__':
                                     'upper_money', 'pay_ratio', 'load_date', 'update_date'], inplace=True)
         print(len(final_data))
 
-        # # save to csv
-        # time = str(max(final_data['created'])).split(" ")[0]
-        # final_data.to_csv(path_ + final_name + f"{time}" + ".csv", index=False)
-        # logs.info("", "data load to excel successfully", log_file)
-        #
-        # # save to database
-        # db_info = config.get_parameters('wms')
-        # con = base.get_connection(db_info)
-        #
-        # base.save_sql(final_data, "market_info", con, "wms", log_file)
-        #
-        # move_path = r"E:\市场"
-        # path = r"E:\marketing"
-        # transfer = Transfer()
-        # transfer.move_file(path, move_path, log_file)
-        #
-        # generate.generate_folder(path, log_file)
+        # save to csv
+        time = str(max(final_data['created'])).split(" ")[0]
+        final_data.to_csv(path_ + final_name + f"{time}" + ".csv", index=False)
+        logs.info("", "data load to excel successfully", log_file)
+
+        # save to database
+        db_info = config.get_parameters('wms')
+        con = base.get_connection(db_info)
+
+        base.save_sql(final_data, "market_info", con, "wms", log_file)
+
+        move_path = r"E:\市场"
+        path = r"E:\marketing"
+        transfer = Transfer()
+        transfer.move_file(path, move_path, log_file)
+
+        generate.generate_folder(path, log_file)
 
         logs.info("", "Job run successfully\n", log_file)
 
